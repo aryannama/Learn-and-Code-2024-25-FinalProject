@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import itt.lnc.news_aggregation.exception.JsonParsingException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import static itt.lnc.news_aggregation.constants.ExceptionMessages.INVALID_JSON_FORMAT;
@@ -19,6 +20,14 @@ public class JsonParser {
             return objectMapper.readValue(json, classType);
         } catch (JsonProcessingException e) {
             throw new JsonParsingException(String.format(INVALID_JSON_FORMAT, e.getMessage()));
+        }
+    }
+
+    public static <T> T parse(InputStream inputStream, TypeReference<T> classType) {
+        try {
+            return objectMapper.readValue(inputStream, classType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -35,6 +44,14 @@ public class JsonParser {
             return objectMapper.readTree(json);
         } catch (JsonProcessingException e) {
             throw new JsonParsingException(String.format(INVALID_JSON_FORMAT, e.getMessage()));
+        }
+    }
+
+    public static String toJson(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize object to JSON", e);
         }
     }
 }

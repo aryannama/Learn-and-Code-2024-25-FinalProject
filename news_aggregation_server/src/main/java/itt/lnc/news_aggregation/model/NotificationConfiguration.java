@@ -1,9 +1,16 @@
 package itt.lnc.news_aggregation.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "notification_configurations", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "category_id"}))
 public class NotificationConfiguration {
@@ -19,7 +26,13 @@ public class NotificationConfiguration {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    private boolean isEnabled;
+    private boolean enabled = true;
 
-    private List<String> keywords;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "notification_keywords",
+            joinColumns = @JoinColumn(name = "notification_configuration_id")
+    )
+    @Column(name = "keyword")
+    private Set<String> keywords = new HashSet<>();
 }

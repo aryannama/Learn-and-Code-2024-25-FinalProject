@@ -19,4 +19,8 @@ public class ArticleDTO {
     private String articleUrl;
     private String imageUrl;
     private String publishedAt;
+    private boolean hidden;
+    private int reportCount;
+    private int likeCount;
+    private int dislikeCount;
 }

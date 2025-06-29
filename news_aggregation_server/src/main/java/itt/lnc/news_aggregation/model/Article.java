@@ -1,25 +1,25 @@
 package itt.lnc.news_aggregation.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToMany
@@ -30,7 +30,15 @@ public class Article {
     )
     private Set<Category> categories = new HashSet<>();
 
+    @Column(columnDefinition = "TEXT")
     private String articleUrl;
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
-    private String publishedAt;
+    private LocalDate publishedAt;
+
+    private boolean hidden = false;
+    private int reportCount = 0;
+    private int likeCount = 0;
+    private int dislikeCount = 0;
+
 }

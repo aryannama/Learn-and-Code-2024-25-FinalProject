@@ -1,7 +1,11 @@
 package itt.lnc.news_aggregation.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "saved_articles", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "article_id"}))
 public class SavedArticle {
