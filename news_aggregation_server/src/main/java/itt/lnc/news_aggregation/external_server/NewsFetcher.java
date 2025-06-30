@@ -30,7 +30,6 @@ public class NewsFetcher {
     private final ExternalServerMapper externalServerMapper;
     private final ArticleService articleService;
     private final NotificationService notificationService;
-    private final ArticleMapper articleMapper;
 
     public void fetchNews() {
         List<ExternalServerDTO> externalServers = externalServerService.getAllServers();
