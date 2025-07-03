@@ -5,10 +5,7 @@ import itt.lnc.news_aggregation.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,5 +18,17 @@ public class CategoryController {
     public ResponseEntity<?> addCategory(@RequestBody CategoryRequest categoryRequest) {
         categoryService.addCategory(categoryRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PatchMapping("/{categoryId}/hide")
+    public ResponseEntity<?> hideCategory(@PathVariable Long categoryId) {
+        categoryService.hideCategory(categoryId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{categoryId}/unhide")
+    public ResponseEntity<?> unhideCategory(@PathVariable Long categoryId) {
+        categoryService.unhideCategory(categoryId);
+        return ResponseEntity.ok().build();
     }
 }

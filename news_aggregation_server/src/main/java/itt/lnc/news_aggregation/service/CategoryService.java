@@ -11,4 +11,7 @@ public interface CategoryService {
     Category addCategory(CategoryRequest request);
     Set<Category> findMatchingCategories(ArticleDTO dto);
     List<Category> getAllCategories();
+    void hideCategory(Long categoryId);
+    void unhideCategory(Long categoryId);
+    List<Category> getHiddenCategories();
 }

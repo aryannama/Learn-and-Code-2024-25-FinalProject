@@ -61,4 +61,27 @@ public class DefaultCategoryService implements CategoryService {
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
+
+    @Override
+    public void hideCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+        category.setHidden(true);
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public void unhideCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+        category.setHidden(false);
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> getHiddenCategories() {
+        return getAllCategories().stream()
+            .filter(Category::isHidden)
+            .toList();
+    }
 }

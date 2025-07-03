@@ -3,7 +3,6 @@ package itt.lnc.news_aggregation.external_server;
 import itt.lnc.news_aggregation.dto.ArticleDTO;
 import itt.lnc.news_aggregation.dto.ExternalServerDTO;
 import itt.lnc.news_aggregation.factory.ExternalServerFactory;
-import itt.lnc.news_aggregation.mapper.ArticleMapper;
 import itt.lnc.news_aggregation.mapper.ExternalServerMapper;
 import itt.lnc.news_aggregation.model.Article;
 import itt.lnc.news_aggregation.repository.ExternalServerRepository;

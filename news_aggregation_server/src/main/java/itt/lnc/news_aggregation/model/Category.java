@@ -24,4 +24,6 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<Article> articles = new HashSet<>();
+
+    private boolean hidden = false;
 }
