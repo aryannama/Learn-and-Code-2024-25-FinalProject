@@ -5,12 +5,14 @@ import itt.lnc.news_aggregation.model.ExternalServer;
 import itt.lnc.news_aggregation.repository.ExternalServerRepository;
 import itt.lnc.news_aggregation.service.ExternalServerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ServerService implements ExternalServerService {
@@ -25,8 +27,10 @@ public class ServerService implements ExternalServerService {
     }
 
     public void updateApiKey(Long id, String apiKey) {
+        log.info("Updating api key for server {}", id);
         ExternalServer externalServer = externalServerRepository.findById(id).orElseThrow(() -> new RuntimeException("Server not found"));
         externalServer.setApiKey(apiKey);
         externalServerRepository.save(externalServer);
+        log.info("Updated api key for server {}", id);
     }
 }

@@ -2,6 +2,7 @@ package itt.lnc.news_aggregation.external_server;
 
 import itt.lnc.news_aggregation.dto.ArticleDto;
 import itt.lnc.news_aggregation.dto.ExternalServerDto;
+import itt.lnc.news_aggregation.exception.ExternalServerException;
 import itt.lnc.news_aggregation.factory.ExternalServerFactory;
 import itt.lnc.news_aggregation.mapper.ExternalServerMapper;
 import itt.lnc.news_aggregation.model.Article;
@@ -32,8 +33,13 @@ public class NewsFetcher {
 
     public void fetchNews() {
         List<ExternalServerDto> externalServers = externalServerService.getAllServers();
+        if (externalServers.isEmpty()) {
+            log.warn("No external servers configured for news fetching.");
+            throw new ExternalServerException("No external servers configured for news fetching.");
+        }
         for (ExternalServerDto server : externalServers) {
             try {
+                log.info("Fetching news from server : {}", server.getName());
                 ExternalServer externalServer = externalServerFactory.getExternalServer(server.getName());
                 List<ArticleDto> articles = externalServer.fetchArticles(server);
 
@@ -43,13 +49,15 @@ public class NewsFetcher {
                     externalServerRepository.save(externalServerMapper.toEntity(server));
                     List<Article> savedArticles = articleService.saveArticles(articles);
                     notificationService.notifyUsers(savedArticles);
+                    log.info("Saved articles for server : {}", server.getName());
                     return;
                 }
             } catch (Exception exception) {
                 server.setStatus(INACTIVE);
                 externalServerRepository.save(externalServerMapper.toEntity(server));
-                log.error("e: ", exception);
+                log.error("Error fetching news from server {}: {}", server.getName(), exception.getMessage());
             }
         }
+        log.warn("No articles fetched from any external server.");
     }
 }

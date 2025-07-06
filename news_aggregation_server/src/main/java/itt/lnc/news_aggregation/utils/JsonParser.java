@@ -27,7 +27,7 @@ public class JsonParser {
         try {
             return objectMapper.readValue(inputStream, classType);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new JsonParsingException(e.getMessage());
         }
     }
 
@@ -35,7 +35,7 @@ public class JsonParser {
         try {
             return objectMapper.readerForListOf(classType).readValue(arrayNode);
         } catch (IOException e) {
-            throw new JsonParsingException(String.format(INVALID_JSON_FORMAT, e.getMessage()));
+            throw new JsonParsingException(e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public class JsonParser {
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize object to JSON", e);
+            throw new JsonParsingException(String.format(INVALID_JSON_FORMAT, e.getMessage()));
         }
     }
 }

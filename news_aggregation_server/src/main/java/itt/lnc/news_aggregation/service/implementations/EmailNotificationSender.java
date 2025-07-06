@@ -25,6 +25,11 @@ public class EmailNotificationSender implements NotificationSender {
 
     @Override
     public void sendNotification(User user, List<Article> articles) {
+        if (articles == null || articles.isEmpty()) {
+            log.info("No new notifications for user : {}", user.getName());
+            return;
+        }
+        log.info("Sending email to {}", user.getEmail());
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -37,6 +42,7 @@ public class EmailNotificationSender implements NotificationSender {
             helper.setText(htmlContent, true);
 
             mailSender.send(message);
+            log.info("Email sent to {}", user.getEmail());
         } catch (MessagingException e) {
             log.error("Failed to send email to {}", user.getEmail(), e);
         }

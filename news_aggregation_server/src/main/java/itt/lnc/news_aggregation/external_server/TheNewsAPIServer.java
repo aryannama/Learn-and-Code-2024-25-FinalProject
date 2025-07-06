@@ -22,8 +22,9 @@ public class TheNewsAPIServer implements ExternalServer {
     public TheNewsAPIServer(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
+
     @Override
-    public List<ArticleDto> fetchArticles(ExternalServerDto externalServerDTO) throws IllegalArgumentException{
+    public List<ArticleDto> fetchArticles(ExternalServerDto externalServerDTO) throws IllegalArgumentException {
         String url = externalServerDTO.getBaseUrl().replace("<API_KEY>", externalServerDTO.getApiKey());
         HttpResponse<String> response = APIClient.get(url);
         JsonNode rootNode = JsonParser.toJsonNode(response.body());

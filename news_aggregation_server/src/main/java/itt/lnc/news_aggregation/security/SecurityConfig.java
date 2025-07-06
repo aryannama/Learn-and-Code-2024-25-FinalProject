@@ -3,6 +3,7 @@ package itt.lnc.news_aggregation.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,10 +32,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/articles/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/categories/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/articles/**").hasRole("USER")
+                        .requestMatchers("/api/blocked-keywords/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/categories/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/categories/**").hasRole("ADMIN")
                         .requestMatchers("/api/external-servers/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/notification-configurations/**").hasRole("USER")
+                        .requestMatchers("/api/notifications/**").hasRole("USER")
+                        .requestMatchers("/api/reported-articles/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/reactions/**").hasAnyRole("USER", "ADMIN")
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

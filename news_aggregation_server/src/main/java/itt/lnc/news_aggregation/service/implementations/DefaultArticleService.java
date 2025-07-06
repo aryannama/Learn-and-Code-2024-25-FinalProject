@@ -3,7 +3,7 @@ package itt.lnc.news_aggregation.service.implementations;
 import itt.lnc.news_aggregation.dto.ArticleDto;
 import itt.lnc.news_aggregation.dto.ArticleFilter;
 import itt.lnc.news_aggregation.dto.PaginatedResponse;
-import itt.lnc.news_aggregation.exception.ArticleNotFoundException;
+import itt.lnc.news_aggregation.exception.ResourceNotFoundException;
 import itt.lnc.news_aggregation.mapper.ArticleMapper;
 import itt.lnc.news_aggregation.model.Article;
 import itt.lnc.news_aggregation.model.BlockedKeyword;
@@ -44,6 +44,8 @@ public class DefaultArticleService implements ArticleService {
         List<Article> entities = articles.stream()
                 .map(articleMapper::toEntity)
                 .toList();
+
+        log.info("Saved {} articles", entities.size());
         return articleRepository.saveAll(entities);
     }
 
@@ -51,10 +53,14 @@ public class DefaultArticleService implements ArticleService {
     public void saveArticle(ArticleDto articleDTO) {
         Article article = articleMapper.toEntity(articleDTO);
         articleRepository.save(article);
+        log.info("Saved article with ID: {}", article.getId());
     }
 
     @Override
     public ArticleDto getArticle(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid article ID");
+        }
         Article article = getArticleById(id);
         return articleMapper.toDto(article);
     }
@@ -62,12 +68,13 @@ public class DefaultArticleService implements ArticleService {
     @Override
     public Article getArticleById(Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Article not found with ID: " + id));
     }
 
     @Override
     public void deleteArticle(Long id) {
         articleRepository.deleteById(id);
+
     }
 
     @Override

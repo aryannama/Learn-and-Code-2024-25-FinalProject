@@ -2,30 +2,32 @@ package itt.lnc.news_aggregation.service.implementations;
 
 import itt.lnc.news_aggregation.helper.UserPreferenceHelper;
 import itt.lnc.news_aggregation.model.Article;
-import itt.lnc.news_aggregation.repository.ArticleRepository;
 import itt.lnc.news_aggregation.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecommendationServiceImpl implements RecommendationService {
 
     private final UserPreferenceHelper userPreferenceHelper;
-    private final ArticleRepository articleRepository;
 
     @Override
     public List<Article> getRecommendedArticlesForUser(Long userId, List<Article> articles) {
-
+        log.info("Getting recommended articles for user {}", userId);
         Set<Long> categoryIds = userPreferenceHelper.getPreferredCategories(userId);
         Set<String> keywords = userPreferenceHelper.getPreferredKeywords(userId);
 
-        return articles.stream()
+        List<Article> recommendedArticles = articles.stream()
                 .filter(article -> isArticleRelevant(article, categoryIds, keywords))
                 .toList();
+        log.info("Found {} recommended articles for user Id: {}", recommendedArticles.size(), userId);
+        return recommendedArticles;
     }
 
     private boolean isArticleRelevant(Article article, Set<Long> categoryIds, Set<String> keywords) {

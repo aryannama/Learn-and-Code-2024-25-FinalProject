@@ -12,6 +12,7 @@ import itt.lnc.news_aggregation.security.JwtService;
 import itt.lnc.news_aggregation.service.AuthService;
 import itt.lnc.news_aggregation.service.NotificationConfigurationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DefaultAuthService implements AuthService {
 
     private final UserRepository userRepository;
@@ -44,6 +46,7 @@ public class DefaultAuthService implements AuthService {
         registerUser.setRole(UserRole.USER);
         registerUser = userRepository.save(registerUser);
         notificationConfigurationService.createDefaultNotificationConfigurations(registerUser);
+        log.info("User registered successfully with email: {}", registerUser.getEmail());
     }
 
     public LoginResponse login(LoginRequest request) {
@@ -55,6 +58,7 @@ public class DefaultAuthService implements AuthService {
 
         LoginResponse response = new LoginResponse();
         response.setAccessToken(jwtService.generateToken(request.getEmail()));
+        log.info("Login successfully with email: {}", request.getEmail());
         return response;
     }
 }

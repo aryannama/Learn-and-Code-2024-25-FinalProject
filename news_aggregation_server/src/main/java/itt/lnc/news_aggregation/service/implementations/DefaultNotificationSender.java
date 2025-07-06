@@ -6,10 +6,12 @@ import itt.lnc.news_aggregation.model.User;
 import itt.lnc.news_aggregation.repository.NotificationRepository;
 import itt.lnc.news_aggregation.service.NotificationSender;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DefaultNotificationSender implements NotificationSender {
@@ -17,7 +19,7 @@ public class DefaultNotificationSender implements NotificationSender {
 
     @Override
     public void sendNotification(User user, List<Article> articles) {
-
+        log.info("Sending notification to user: {} ", user.getEmail());
         for (Article article : articles) {
             if (!notificationRepository.existsByUserIdAndArticleId(user.getId(), article.getId())) {
                 Notification notification = Notification.builder()
@@ -28,5 +30,6 @@ public class DefaultNotificationSender implements NotificationSender {
                 notificationRepository.save(notification);
             }
         }
+        log.info("Notification has been sent to {}", user.getEmail());
     }
 }
