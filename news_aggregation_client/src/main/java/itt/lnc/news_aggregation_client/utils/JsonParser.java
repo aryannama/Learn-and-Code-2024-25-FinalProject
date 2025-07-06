@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itt.lnc.news_aggregation_client.exception.JsonParsingException;
 
-
 import java.io.IOException;
 import java.util.List;
 
@@ -31,9 +30,9 @@ public class JsonParser {
         }
     }
 
-    public static <T> List<T> parseList(JsonNode arrayNode, Class<T> classType) {
+    public static <T> List<T> parseList(String json, Class<T> classType) {
         try {
-            return objectMapper.readerForListOf(classType).readValue(arrayNode);
+            return objectMapper.readerForListOf(classType).readValue(toJsonNode(json));
         } catch (IOException e) {
             throw new JsonParsingException(String.format(INVALID_JSON_FORMAT, e.getMessage()));
         }

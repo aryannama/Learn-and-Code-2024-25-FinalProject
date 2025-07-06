@@ -1,6 +1,7 @@
 package itt.lnc.news_aggregation_client.utils;
 
-import java.io.IOException;
+import itt.lnc.news_aggregation_client.exception.InvalidRequestException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -17,8 +18,8 @@ public class APIClient {
         return sendRequest(url, "GET", null, token);
     }
 
-    public static HttpResponse<String> post(String url, String body) {
-        return sendRequest(url, "POST", body, null);
+    public static HttpResponse<String> post(String url, String token) {
+        return sendRequest(url, "POST", null, token);
     }
 
     public static HttpResponse<String> post(String url, String body, String token) {
@@ -28,6 +29,19 @@ public class APIClient {
     public static HttpResponse<String> put(String url, String body, String token) {
         return sendRequest(url, "PUT", body, token);
     }
+
+    public static HttpResponse<String> put(String url, String token) {
+        return sendRequest(url, "PUT", null, token);
+    }
+
+    public static HttpResponse<String> patch(String url, String body, String token) {
+        return sendRequest(url, "PATCH", body, token);
+    }
+
+    public static HttpResponse<String> patch(String url, String token) {
+        return sendRequest(url, "PATCH", null, token);
+    }
+
 
     public static HttpResponse<String> delete(String url, String token) {
         return sendRequest(url, "DELETE", null, token);
@@ -51,8 +65,9 @@ public class APIClient {
 
         try {
             return httpClient.send(builder.build(), HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("HTTP " + method + " failed: " + e.getMessage(), e);
+        } catch (Exception exception) {
+            throw new InvalidRequestException("HTTP " + method + " failed: " + exception.getMessage());
         }
     }
+
 }

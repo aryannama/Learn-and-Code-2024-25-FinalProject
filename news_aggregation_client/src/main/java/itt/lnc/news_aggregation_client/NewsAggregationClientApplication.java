@@ -1,18 +1,27 @@
 package itt.lnc.news_aggregation_client;
 
-import itt.lnc.news_aggregation_client.menu.HomeMenu;
+import itt.lnc.news_aggregation_client.menu.MenuContext;
+import itt.lnc.news_aggregation_client.utils.ConsoleUtil;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-public class NewsAggregationClientApplication {
+public class NewsAggregationClientApplication implements CommandLineRunner {
 
-    public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(NewsAggregationClientApplication.class, args);
-        HomeMenu homeMenu = context.getBean(HomeMenu.class);
+    private final MenuContext menuContext;
 
-        homeMenu.displayMenu();
+    public NewsAggregationClientApplication(MenuContext menuContext) {
+        this.menuContext = menuContext;
     }
 
+    public static void main(String[] args) {
+        SpringApplication.run(NewsAggregationClientApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) {
+        ConsoleUtil.printHeader("Welcome to the News Aggregator application");
+        menuContext.start();
+    }
 }
