@@ -1,10 +1,10 @@
 package itt.lnc.news_aggregation.external_server;
 
-import itt.lnc.news_aggregation.dto.ArticleDTO;
-import itt.lnc.news_aggregation.dto.ExternalServerDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
+import itt.lnc.news_aggregation.dto.ExternalServerDto;
 
 import java.util.List;
 
 public interface ExternalServer {
-    List<ArticleDTO> fetchArticles(ExternalServerDTO externalServerDTO);
+    List<ArticleDto> fetchArticles(ExternalServerDto externalServerDTO);
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExternalServerDTO {
+public class ExternalServerDto {
     private Long id;
     private String name;
     private String apiKey;

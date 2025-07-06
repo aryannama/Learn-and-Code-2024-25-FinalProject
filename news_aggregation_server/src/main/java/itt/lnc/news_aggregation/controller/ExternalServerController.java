@@ -1,8 +1,10 @@
 package itt.lnc.news_aggregation.controller;
 
-import itt.lnc.news_aggregation.dto.ExternalServerDTO;
+import itt.lnc.news_aggregation.dto.ApiKeyUpdateRequest;
+import itt.lnc.news_aggregation.dto.ExternalServerDto;
 import itt.lnc.news_aggregation.service.ExternalServerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +18,14 @@ public class ExternalServerController {
     private final ExternalServerService externalServerService;
 
     @GetMapping
-    public ResponseEntity<List<ExternalServerDTO>> getAllServers() {
+    public ResponseEntity<List<ExternalServerDto>> getAllServers() {
         return ResponseEntity.ok(externalServerService.getAllServers());
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ExternalServerDTO> updateServerApiKey(@PathVariable Long id, String apiKey) {
-        return ResponseEntity.ok(externalServerService.updateApiKey(id, apiKey));
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateServerApiKey(@PathVariable Long id, @RequestBody ApiKeyUpdateRequest request) {
+        externalServerService.updateApiKey(id, request.getApiKey());
     }
-
 
 }

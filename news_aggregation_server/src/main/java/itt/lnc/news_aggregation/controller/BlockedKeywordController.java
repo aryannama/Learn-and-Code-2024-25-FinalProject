@@ -16,9 +16,9 @@ public class BlockedKeywordController {
     private final BlockedKeywordService blockedKeywordService;
 
     @PostMapping
-    public ResponseEntity<BlockedKeyword> addBlockedKeyword(@RequestParam String keyword) {
-        BlockedKeyword blockedKeyword = blockedKeywordService.addBlockedKeyword(keyword);
-        return ResponseEntity.status(HttpStatus.CREATED).body(blockedKeyword);
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addBlockedKeyword(@RequestParam String keyword) {
+        blockedKeywordService.addBlockedKeyword(keyword);
     }
 
     @DeleteMapping("/{id}")

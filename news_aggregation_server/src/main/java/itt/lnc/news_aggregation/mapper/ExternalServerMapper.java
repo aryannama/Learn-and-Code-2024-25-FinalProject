@@ -1,6 +1,6 @@
 package itt.lnc.news_aggregation.mapper;
 
-import itt.lnc.news_aggregation.dto.ExternalServerDTO;
+import itt.lnc.news_aggregation.dto.ExternalServerDto;
 import itt.lnc.news_aggregation.model.ExternalServer;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -12,11 +12,11 @@ public class ExternalServerMapper {
 
     private final ModelMapper modelMapper;
 
-    public ExternalServer toEntity(ExternalServerDTO dto) {
+    public ExternalServer toEntity(ExternalServerDto dto) {
         return modelMapper.map(dto, ExternalServer.class);
     }
 
-    public ExternalServerDTO toDto(ExternalServer entity) {
-        return modelMapper.map(entity, ExternalServerDTO.class);
+    public ExternalServerDto toDto(ExternalServer entity) {
+        return modelMapper.map(entity, ExternalServerDto.class);
     }
 }

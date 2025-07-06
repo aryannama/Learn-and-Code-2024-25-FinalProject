@@ -1,7 +1,7 @@
 package itt.lnc.news_aggregation.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import itt.lnc.news_aggregation.dto.ArticleDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
 import itt.lnc.news_aggregation.model.Category;
 
 import java.io.InputStream;
@@ -25,7 +25,7 @@ public class CategoryKeywordUtil {
         return categoryKeywords;
     }
 
-    public static Set<Category> getCategoriesByKeyword(ArticleDTO dto, List<Category> categories) {
+    public static Set<Category> getCategoriesByKeyword(ArticleDto dto, List<Category> categories) {
         Map<String, List<String>> categoryKeywords = loadCategoryKeywords();
         Set<Category> detectedCategories = new HashSet<>();
 

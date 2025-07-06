@@ -1,5 +1,8 @@
 package itt.lnc.news_aggregation.service.implementations;
 
+import itt.lnc.news_aggregation.dto.NotificationConfigurationDto;
+import itt.lnc.news_aggregation.exception.NotFoundException;
+import itt.lnc.news_aggregation.mapper.NotificationConfigurationMapper;
 import itt.lnc.news_aggregation.model.Article;
 import itt.lnc.news_aggregation.model.Category;
 import itt.lnc.news_aggregation.model.NotificationConfiguration;
@@ -20,6 +23,7 @@ public class DefaultNotificationConfigurationService implements NotificationConf
 
     private final NotificationConfigurationRepository notificationConfigurationRepository;
     private final CategoryService categoryService;
+    private final NotificationConfigurationMapper notificationConfigurationMapper;
 
     @Override
     public List<Article> getMatchingArticles(Long userId, List<Article> articles) {
@@ -56,6 +60,34 @@ public class DefaultNotificationConfigurationService implements NotificationConf
         notificationConfigurationRepository.saveAll(configurations);
     }
 
+    @Override
+    public List<NotificationConfigurationDto> getUserNotificationConfiguration(Long userId) {
+        List<NotificationConfiguration> configurations = notificationConfigurationRepository.findByUserId(userId);
+
+        return configurations.stream().map(notificationConfigurationMapper::toDto).toList();
+    }
+
+    @Override
+    public void toggleCategory(Long userId, Long categoryId, boolean enabled) {
+        NotificationConfiguration configuration = getNotificationConfiguration(userId, categoryId);
+        configuration.setEnabled(enabled);
+        notificationConfigurationRepository.save(configuration);
+    }
+
+    @Override
+    public void addKeyword(Long userId, Long categoryId, String keyword) {
+        NotificationConfiguration configuration = getNotificationConfiguration(userId, categoryId);
+        configuration.getKeywords().add(keyword.toLowerCase());
+        notificationConfigurationRepository.save(configuration);
+    }
+
+    @Override
+    public void removeKeyword(Long userId, Long categoryId, String keyword) {
+        NotificationConfiguration configuration = getNotificationConfiguration(userId, categoryId);
+        configuration.getKeywords().remove(keyword.toLowerCase());
+        notificationConfigurationRepository.save(configuration);
+    }
+
     private boolean hasMatchingCategory(Article article, Category configCategory) {
         for (Category articleCategory : article.getCategories()) {
             if (articleCategory.getName().equalsIgnoreCase(configCategory.getName())) {
@@ -75,5 +107,10 @@ public class DefaultNotificationConfigurationService implements NotificationConf
             }
         }
         return false;
+    }
+
+    private NotificationConfiguration getNotificationConfiguration(Long userId, Long categoryId) {
+        return notificationConfigurationRepository.findByUserIdAndCategoryId(userId, categoryId)
+                .orElseThrow(() -> new NotFoundException("Notification configuration not found for user and category"));
     }
 }

@@ -1,9 +1,7 @@
 package itt.lnc.news_aggregation.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,6 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "notifications", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "article_id"}))
 public class Notification {
     @Id

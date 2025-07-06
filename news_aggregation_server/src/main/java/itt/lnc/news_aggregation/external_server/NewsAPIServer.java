@@ -1,9 +1,9 @@
 package itt.lnc.news_aggregation.external_server;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import itt.lnc.news_aggregation.dto.ArticleDTO;
-import itt.lnc.news_aggregation.dto.ExternalServerDTO;
-import itt.lnc.news_aggregation.dto.NewsAPIDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
+import itt.lnc.news_aggregation.dto.ExternalServerDto;
+import itt.lnc.news_aggregation.dto.NewsApiDto;
 import itt.lnc.news_aggregation.utils.APIClient;
 import itt.lnc.news_aggregation.utils.JsonParser;
 import org.modelmapper.ModelMapper;
@@ -24,13 +24,13 @@ public class NewsAPIServer implements ExternalServer {
     }
 
     @Override
-    public List<ArticleDTO> fetchArticles(ExternalServerDTO externalServerDTO) {
+    public List<ArticleDto> fetchArticles(ExternalServerDto externalServerDTO) {
         String url = externalServerDTO.getBaseUrl().replace("<API_KEY>", externalServerDTO.getApiKey());
         HttpResponse<String> response = APIClient.get(url);
         JsonNode rootNode = JsonParser.toJsonNode(response.body());
-        List<NewsAPIDTO> articles = JsonParser.parseList(rootNode.get("articles"), NewsAPIDTO.class);
+        List<NewsApiDto> articles = JsonParser.parseList(rootNode.get("articles"), NewsApiDto.class);
         return articles.stream()
-                .map(newsAPIDTO -> modelMapper.map(newsAPIDTO, ArticleDTO.class))
+                .map(newsApiDto -> modelMapper.map(newsApiDto, ArticleDto.class))
                 .collect(Collectors.toList());
     }
 }

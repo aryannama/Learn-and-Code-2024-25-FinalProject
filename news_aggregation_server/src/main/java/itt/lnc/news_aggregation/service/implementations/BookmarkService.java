@@ -1,6 +1,6 @@
 package itt.lnc.news_aggregation.service.implementations;
 
-import itt.lnc.news_aggregation.dto.ArticleDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
 import itt.lnc.news_aggregation.mapper.ArticleMapper;
 import itt.lnc.news_aggregation.model.SavedArticle;
 import itt.lnc.news_aggregation.repository.ArticleRepository;
@@ -35,7 +35,7 @@ public class BookmarkService implements SavedArticleService {
         }
     }
 
-    public List<ArticleDTO> getSavedArticles(Long userId) {
+    public List<ArticleDto> getSavedArticles(Long userId) {
         List<SavedArticle> savedArticles = savedArticleRepository.findAllByUserId(userId);
         return savedArticles.stream()
                 .map(article -> articleMapper.toDto(article.getArticle()))

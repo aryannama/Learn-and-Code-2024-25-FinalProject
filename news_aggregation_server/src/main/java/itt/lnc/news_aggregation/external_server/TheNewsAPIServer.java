@@ -1,9 +1,9 @@
 package itt.lnc.news_aggregation.external_server;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import itt.lnc.news_aggregation.dto.ArticleDTO;
-import itt.lnc.news_aggregation.dto.ExternalServerDTO;
-import itt.lnc.news_aggregation.dto.TheNewsAPIDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
+import itt.lnc.news_aggregation.dto.ExternalServerDto;
+import itt.lnc.news_aggregation.dto.TheNewsApiDto;
 import itt.lnc.news_aggregation.utils.APIClient;
 import itt.lnc.news_aggregation.utils.JsonParser;
 import org.modelmapper.ModelMapper;
@@ -23,13 +23,13 @@ public class TheNewsAPIServer implements ExternalServer {
         this.modelMapper = modelMapper;
     }
     @Override
-    public List<ArticleDTO> fetchArticles(ExternalServerDTO externalServerDTO) throws IllegalArgumentException{
+    public List<ArticleDto> fetchArticles(ExternalServerDto externalServerDTO) throws IllegalArgumentException{
         String url = externalServerDTO.getBaseUrl().replace("<API_KEY>", externalServerDTO.getApiKey());
         HttpResponse<String> response = APIClient.get(url);
         JsonNode rootNode = JsonParser.toJsonNode(response.body());
-        List<TheNewsAPIDTO> articles = JsonParser.parseList(rootNode.get("data"), TheNewsAPIDTO.class);
+        List<TheNewsApiDto> articles = JsonParser.parseList(rootNode.get("data"), TheNewsApiDto.class);
         return articles.stream()
-                .map(theNewsAPIDTO -> modelMapper.map(theNewsAPIDTO, ArticleDTO.class))
+                .map(theNewsApiDto -> modelMapper.map(theNewsApiDto, ArticleDto.class))
                 .collect(Collectors.toList());
     }
 }

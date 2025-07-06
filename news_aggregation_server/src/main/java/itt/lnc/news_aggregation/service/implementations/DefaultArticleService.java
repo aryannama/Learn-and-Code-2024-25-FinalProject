@@ -1,6 +1,6 @@
 package itt.lnc.news_aggregation.service.implementations;
 
-import itt.lnc.news_aggregation.dto.ArticleDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
 import itt.lnc.news_aggregation.dto.ArticleFilter;
 import itt.lnc.news_aggregation.dto.PaginatedResponse;
 import itt.lnc.news_aggregation.exception.ArticleNotFoundException;
@@ -40,7 +40,7 @@ public class DefaultArticleService implements ArticleService {
     private final RecommendationService recommendationService;
 
     @Override
-    public List<Article> saveArticles(List<ArticleDTO> articles) {
+    public List<Article> saveArticles(List<ArticleDto> articles) {
         List<Article> entities = articles.stream()
                 .map(articleMapper::toEntity)
                 .toList();
@@ -48,13 +48,13 @@ public class DefaultArticleService implements ArticleService {
     }
 
     @Override
-    public void saveArticle(ArticleDTO articleDTO) {
+    public void saveArticle(ArticleDto articleDTO) {
         Article article = articleMapper.toEntity(articleDTO);
         articleRepository.save(article);
     }
 
     @Override
-    public ArticleDTO getArticle(Long id) {
+    public ArticleDto getArticle(Long id) {
         Article article = getArticleById(id);
         return articleMapper.toDto(article);
     }
@@ -71,7 +71,7 @@ public class DefaultArticleService implements ArticleService {
     }
 
     @Override
-    public PaginatedResponse<ArticleDTO> getAllArticles(ArticleFilter articleFilter, Pageable pageable) {
+    public PaginatedResponse<ArticleDto> getAllArticles(ArticleFilter articleFilter, Pageable pageable) {
         Long userId = SecurityContext.getCurrentUserId();
 
         List<Category> hiddenCategories = categoryService.getHiddenCategories();
@@ -90,7 +90,7 @@ public class DefaultArticleService implements ArticleService {
         List<Article> sortedArticles = sortArticles(combinedResults, pageable.getSort());
         List<Article> paginatedContent = PaginationUtil.paginate(sortedArticles, pageable);
 
-        return PaginatedResponse.<ArticleDTO>builder().currentPage(pageable.getPageNumber())
+        return PaginatedResponse.<ArticleDto>builder().currentPage(pageable.getPageNumber())
                 .pageSize(pageable.getPageSize())
                 .totalElements(combinedResults.size())
                 .totalPages(PaginationUtil.calculateTotalPages(combinedResults.size(), pageable.getPageSize()))

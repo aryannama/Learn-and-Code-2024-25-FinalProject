@@ -11,7 +11,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleDTO {
+public class ArticleDto {
     private Long id;
     private String title;
     private String description;

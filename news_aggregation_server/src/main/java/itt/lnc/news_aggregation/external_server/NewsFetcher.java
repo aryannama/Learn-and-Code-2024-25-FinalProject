@@ -1,7 +1,7 @@
 package itt.lnc.news_aggregation.external_server;
 
-import itt.lnc.news_aggregation.dto.ArticleDTO;
-import itt.lnc.news_aggregation.dto.ExternalServerDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
+import itt.lnc.news_aggregation.dto.ExternalServerDto;
 import itt.lnc.news_aggregation.factory.ExternalServerFactory;
 import itt.lnc.news_aggregation.mapper.ExternalServerMapper;
 import itt.lnc.news_aggregation.model.Article;
@@ -31,11 +31,11 @@ public class NewsFetcher {
     private final NotificationService notificationService;
 
     public void fetchNews() {
-        List<ExternalServerDTO> externalServers = externalServerService.getAllServers();
-        for (ExternalServerDTO server : externalServers) {
+        List<ExternalServerDto> externalServers = externalServerService.getAllServers();
+        for (ExternalServerDto server : externalServers) {
             try {
                 ExternalServer externalServer = externalServerFactory.getExternalServer(server.getName());
-                List<ArticleDTO> articles = externalServer.fetchArticles(server);
+                List<ArticleDto> articles = externalServer.fetchArticles(server);
 
                 if (!articles.isEmpty()) {
                     server.setLastAccessed(LocalDateTime.now());

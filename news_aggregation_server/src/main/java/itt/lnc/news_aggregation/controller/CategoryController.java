@@ -21,14 +21,19 @@ public class CategoryController {
     }
 
     @PatchMapping("/{categoryId}/hide")
-    public ResponseEntity<?> hideCategory(@PathVariable Long categoryId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void hideCategory(@PathVariable Long categoryId) {
         categoryService.hideCategory(categoryId);
-        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{categoryId}/unhide")
-    public ResponseEntity<?> unhideCategory(@PathVariable Long categoryId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unhideCategory(@PathVariable Long categoryId) {
         categoryService.unhideCategory(categoryId);
-        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 }

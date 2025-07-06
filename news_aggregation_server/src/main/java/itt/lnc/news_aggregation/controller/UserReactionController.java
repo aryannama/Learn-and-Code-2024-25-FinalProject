@@ -1,13 +1,11 @@
 package itt.lnc.news_aggregation.controller;
 
+import itt.lnc.news_aggregation.dto.ReactionsResponse;
 import itt.lnc.news_aggregation.security.SecurityContext;
 import itt.lnc.news_aggregation.service.ReactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/reactions")
@@ -34,5 +32,11 @@ public class UserReactionController {
         Long userId = SecurityContext.getCurrentUserId();
         userReactionService.toggleReport(userId, articleId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{articleId}")
+    public ResponseEntity<ReactionsResponse> getReactions(@PathVariable Long articleId) {
+        Long userId = SecurityContext.getCurrentUserId();
+        return ResponseEntity.ok(userReactionService.getUserReaction(userId, articleId));
     }
 }

@@ -1,6 +1,6 @@
 package itt.lnc.news_aggregation.service.implementations;
 
-import itt.lnc.news_aggregation.dto.ArticleDTO;
+import itt.lnc.news_aggregation.dto.ArticleDto;
 import itt.lnc.news_aggregation.dto.CategoryRequest;
 import itt.lnc.news_aggregation.model.Category;
 import itt.lnc.news_aggregation.repository.CategoryRepository;
@@ -24,12 +24,12 @@ public class DefaultCategoryService implements CategoryService {
         });
 
         Category category = new Category();
-        category.setName(category.getName());
+        category.setName(categoryRequest.getName());
 
         return categoryRepository.save(category);
     }
 
-    public Set<Category> findMatchingCategories(ArticleDTO dto) {
+    public Set<Category> findMatchingCategories(ArticleDto dto) {
         List<Category> categories = categoryRepository.findAll();
         Set<Category> matchedCategories = new HashSet<>();
 

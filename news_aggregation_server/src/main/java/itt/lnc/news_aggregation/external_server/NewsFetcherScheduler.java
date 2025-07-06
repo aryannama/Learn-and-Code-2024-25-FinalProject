@@ -12,9 +12,9 @@ public class NewsFetcherScheduler {
 
     private final NewsFetcher newsFetcher;
 
-    @Scheduled(fixedRate = 3 * 60 * 60 * 1000)
-    public void scheduleNewsFetchers() {
-        log.info("Starting news fetcher scheduler...");
-        newsFetcher.fetchNews();
-    }
+//    @Scheduled(fixedRate = 3 * 60 * 60 * 1000)
+//    public void scheduleNewsFetchers() {
+//        log.info("Starting news fetcher scheduler...");
+//        newsFetcher.fetchNews();
+//    }
 }
