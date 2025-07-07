@@ -13,7 +13,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RecommendationServiceImpl implements RecommendationService {
+public class DefaultRecommendationService implements RecommendationService {
 
     private final UserPreferenceHelper userPreferenceHelper;
 
