@@ -14,6 +14,7 @@ public class ArticleSpecification {
 
     public static Specification<Article> hasCategory(String category) {
         return (root, query, criteriaBuilder) -> {
+            if (category == null) return null;
             if (category.equalsIgnoreCase("all")) return null;
             return criteriaBuilder.equal(
                     criteriaBuilder.lower(root.join("categories").get("name")),
