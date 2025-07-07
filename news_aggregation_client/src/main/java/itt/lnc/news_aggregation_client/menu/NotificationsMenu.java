@@ -30,7 +30,7 @@ public class NotificationsMenu implements Menu {
                     notificationHandler.viewAllNotifications();
                     return;
                 case 2:
-                    notificationHandler.configureNotifications();
+                    menuContext.navigateTo(MenuType.NOTIFICATION_CONFIGURATION);
                     return;
                 case 3:
                     menuContext.navigateTo(MenuType.USER);
