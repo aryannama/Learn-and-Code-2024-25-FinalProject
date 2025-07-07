@@ -1,0 +1,52 @@
+package itt.lnc.news_aggregation.service.implementations;
+
+import itt.lnc.news_aggregation.dto.ArticleDto;
+import itt.lnc.news_aggregation.exception.ResourceNotFoundException;
+import itt.lnc.news_aggregation.mapper.ArticleMapper;
+import itt.lnc.news_aggregation.model.SavedArticle;
+import itt.lnc.news_aggregation.repository.ArticleRepository;
+import itt.lnc.news_aggregation.repository.SavedArticleRepository;
+import itt.lnc.news_aggregation.repository.UserRepository;
+import itt.lnc.news_aggregation.service.SavedArticleService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class BookmarkService implements SavedArticleService {
+
+    private final SavedArticleRepository savedArticleRepository;
+    private final UserRepository userRepository;
+    private final ArticleRepository articleRepository;
+    private final ArticleMapper articleMapper;
+
+    public void toggleSave(Long userId, Long articleId) {
+        Optional<SavedArticle> existing = savedArticleRepository.findByUserIdAndArticleId(userId, articleId);
+
+        if (existing.isPresent()) {
+            savedArticleRepository.delete(existing.get());
+        } else {
+            SavedArticle saved = new SavedArticle();
+            saved.setUser(userRepository.getReferenceById(userId));
+            saved.setArticle(articleRepository.getReferenceById(articleId));
+            savedArticleRepository.save(saved);
+        }
+    }
+
+    public List<ArticleDto> getSavedArticles(Long userId) {
+        List<SavedArticle> savedArticles = savedArticleRepository.findAllByUserId(userId);
+        if (savedArticles.isEmpty()) {
+            log.error("No saved articles found for userId {}", userId);
+            throw new ResourceNotFoundException("No saved articles found.");
+        }
+        return savedArticles.stream()
+                .map(article -> articleMapper.toDto(article.getArticle()))
+                .toList();
+    }
+}
+
