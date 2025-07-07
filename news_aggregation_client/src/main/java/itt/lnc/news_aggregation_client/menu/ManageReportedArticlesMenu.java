@@ -36,8 +36,8 @@ public class ManageReportedArticlesMenu implements Menu {
                     menuContext.navigateTo(MenuType.ADMIN);
 
             }
-        } catch (Exception e) {
-            ConsoleUtil.printError(e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
     }
 }

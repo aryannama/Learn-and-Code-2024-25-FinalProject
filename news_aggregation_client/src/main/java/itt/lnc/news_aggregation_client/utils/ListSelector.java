@@ -1,5 +1,6 @@
 package itt.lnc.news_aggregation_client.utils;
 
+import itt.lnc.news_aggregation_client.exception.InvalidRequestException;
 import itt.lnc.news_aggregation_client.exception.UserCancelledSelectionException;
 
 import java.util.List;
@@ -17,8 +18,7 @@ public class ListSelector<T> {
 
     public T select(String prompt) {
         if (items == null || items.isEmpty()) {
-            ConsoleUtil.printError("No items available.");
-            return null;
+            throw new InvalidRequestException("No items available.");
         }
 
         ConsoleUtil.displayList(items, formatter);

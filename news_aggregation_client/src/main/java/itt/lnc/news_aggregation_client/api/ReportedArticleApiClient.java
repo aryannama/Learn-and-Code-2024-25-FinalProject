@@ -2,11 +2,9 @@ package itt.lnc.news_aggregation_client.api;
 
 import itt.lnc.news_aggregation_client.constants.Urls;
 import itt.lnc.news_aggregation_client.dto.ArticleDto;
-import itt.lnc.news_aggregation_client.exception.InvalidRequestException;
 import itt.lnc.news_aggregation_client.utils.APIClient;
 import itt.lnc.news_aggregation_client.utils.JsonParser;
 import itt.lnc.news_aggregation_client.utils.SessionManager;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
@@ -17,20 +15,11 @@ public class ReportedArticleApiClient {
     public List<ArticleDto> getAllReportedArticles() {
         String token = SessionManager.getAccessToken();
         HttpResponse<String> response = APIClient.get(Urls.REPORTED_ARTICLES_URL, token);
-
-        if (response.statusCode() != HttpStatus.OK.value()) {
-            throw new InvalidRequestException("Failed to fetch reported articles: " + response.body());
-        }
-
         return JsonParser.parseList(response.body(), ArticleDto.class);
     }
 
     public void hideReportedArticle(Long articleId) {
         String token = SessionManager.getAccessToken();
         HttpResponse<String> response = APIClient.patch(String.format(Urls.HIDE_REPORTED_ARTICLE_URL, articleId), token);
-
-        if (response.statusCode() != HttpStatus.NO_CONTENT.value()) {
-            throw new InvalidRequestException("Failed to hide reported article: " + response.body());
-        }
     }
 }

@@ -37,11 +37,12 @@ public class ManageKeywordMenu implements Menu {
                     return;
                 case 4:
                     menuContext.navigateTo(MenuType.ADMIN);
+                    return;
                 default:
                     ConsoleUtil.printError("Invalid choice");
             }
-        } catch (Exception e) {
-            ConsoleUtil.printError(e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
     }
 }

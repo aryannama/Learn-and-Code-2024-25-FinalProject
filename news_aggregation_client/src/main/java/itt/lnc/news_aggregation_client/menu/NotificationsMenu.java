@@ -41,8 +41,8 @@ public class NotificationsMenu implements Menu {
                 default:
                     ConsoleUtil.println("Invalid choice");
             }
-        } catch (Exception e) {
-            ConsoleUtil.printError(e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
     }
 }

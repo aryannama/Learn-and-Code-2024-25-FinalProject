@@ -5,7 +5,6 @@ import itt.lnc.news_aggregation_client.constants.Urls;
 import itt.lnc.news_aggregation_client.dto.LoginRequest;
 import itt.lnc.news_aggregation_client.dto.LoginResponse;
 import itt.lnc.news_aggregation_client.dto.RegisterRequest;
-import itt.lnc.news_aggregation_client.exception.AuthenticationException;
 import itt.lnc.news_aggregation_client.utils.APIClient;
 import itt.lnc.news_aggregation_client.utils.ConsoleUtil;
 import itt.lnc.news_aggregation_client.utils.JsonParser;
@@ -20,12 +19,8 @@ public class AuthApiClient {
     public LoginResponse login(LoginRequest loginRequest) {
         HttpResponse<String> response = APIClient.post(Urls.LOGIN_URL, JsonParser.toJson(loginRequest), "");
 
-        if (response.statusCode() == HttpStatus.OK.value()) {
-            return JsonParser.parse(response.body(), new TypeReference<>() {
-            });
-        } else {
-            throw new AuthenticationException("Login failed with status code: " + response.statusCode());
-        }
+        return JsonParser.parse(response.body(), new TypeReference<>() {
+        });
     }
 
     public void register(RegisterRequest registerRequest) {
@@ -33,8 +28,6 @@ public class AuthApiClient {
 
         if (response.statusCode() == HttpStatus.CREATED.value()) {
             ConsoleUtil.printMessage("User Registered Successfully");
-        } else {
-            throw new AuthenticationException("Unable to create user! Status code: " + response.statusCode());
         }
     }
 }

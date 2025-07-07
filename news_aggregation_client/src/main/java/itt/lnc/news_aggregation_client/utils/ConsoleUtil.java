@@ -10,8 +10,16 @@ import java.util.function.Function;
 public class ConsoleUtil {
     private static final Scanner scanner = new Scanner(System.in);
 
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BOLD = "\u001B[1m";
+
     public static String readLine(String prompt) {
-        System.out.print(prompt + ": ");
+        System.out.print(YELLOW + prompt + ": ");
         return scanner.nextLine();
     }
 
@@ -29,31 +37,32 @@ public class ConsoleUtil {
     }
 
     public static void printMessage(String message) {
-        System.out.println("\n--- " + message + " ---");
+        System.out.println(GREEN + "\n→ " + message + RESET);
     }
 
     public static void printError(String message) {
-        System.out.println("\n!!! " + message + " !!!");
+        System.out.println(RED + "\n✖ " + message + RESET);
     }
 
     public static void printHeader(String headerText) {
-        String border = "=".repeat(headerText.length() + 6);
-        System.out.println("\n" + border);
+        String border = "=".repeat(headerText.length() + 8);
+        System.out.println(BOLD + CYAN + "\n" + border);
         System.out.println("|| " + headerText.toUpperCase() + " ||");
-        System.out.println(border + "\n");
+        System.out.println(border + RESET);
     }
 
     public static void printSeparatorLine() {
-        System.out.println("----------------------------------------------------");
+        System.out.println(CYAN + "--------------------------------------------------" + RESET);
     }
 
     public static void displayMenu(List<String> options) {
         for (int i = 0; i < options.size(); i++) {
-            System.out.printf("%d. %s%n", i + 1, options.get(i));
+            System.out.printf("%s%2d. %s%s%n", CYAN, i + 1, options.get(i), RESET);
         }
     }
 
     public static int promptMenu(List<String> options) {
+        printSeparatorLine();
         displayMenu(options);
         printSeparatorLine();
         return readInt("Enter your choice");
@@ -65,7 +74,7 @@ public class ConsoleUtil {
             return;
         }
         for (int i = 0; i < items.size(); i++) {
-            System.out.printf("%d. %s%n", i + 1, formatter.apply(items.get(i)));
+            System.out.printf("%s%2d. %s%s%n", CYAN, i + 1, formatter.apply(items.get(i)), RESET);
         }
     }
 

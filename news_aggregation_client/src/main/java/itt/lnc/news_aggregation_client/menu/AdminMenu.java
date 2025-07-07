@@ -5,6 +5,7 @@ import itt.lnc.news_aggregation_client.constants.MenuType;
 import itt.lnc.news_aggregation_client.service.CategoryService;
 import itt.lnc.news_aggregation_client.service.ExternalServerService;
 import itt.lnc.news_aggregation_client.utils.ConsoleUtil;
+import itt.lnc.news_aggregation_client.utils.SessionManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class AdminMenu implements Menu {
 
     @Override
     public void display(MenuContext menuContext) {
+        ConsoleUtil.printHeader("WELCOME " + SessionManager.getName() + " : " + SessionManager.getRole());
         try {
             int choice = ConsoleUtil.promptMenu(List.of(
                     "Manage external servers",
@@ -47,8 +49,8 @@ public class AdminMenu implements Menu {
                 default:
                     ConsoleUtil.println("Invalid choice. Try again.");
             }
-        } catch (Exception e) {
-            ConsoleUtil.printError(e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
     }
 

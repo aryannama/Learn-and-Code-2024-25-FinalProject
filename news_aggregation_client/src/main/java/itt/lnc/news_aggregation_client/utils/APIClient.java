@@ -1,6 +1,10 @@
 package itt.lnc.news_aggregation_client.utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import itt.lnc.news_aggregation_client.dto.ProblemDetailDto;
+import itt.lnc.news_aggregation_client.exception.ApiException;
 import itt.lnc.news_aggregation_client.exception.InvalidRequestException;
+import org.springframework.http.HttpStatus;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -64,7 +68,16 @@ public class APIClient {
         }
 
         try {
-            return httpClient.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= HttpStatus.OK.value() && response.statusCode() <= HttpStatus.NO_CONTENT.value()) {
+                return response;
+            }
+
+            ProblemDetailDto problemDetailDto = JsonParser.parse(response.body(), new TypeReference<ProblemDetailDto>() {
+            });
+            throw new ApiException(problemDetailDto);
+        } catch (ApiException apiException) {
+            throw apiException;
         } catch (Exception exception) {
             throw new InvalidRequestException("HTTP " + method + " failed: " + exception.getMessage());
         }

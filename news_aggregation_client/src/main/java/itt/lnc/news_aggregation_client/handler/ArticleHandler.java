@@ -103,8 +103,8 @@ public class ArticleHandler {
             filter.setStartDate(startDate);
             filter.setEndDate(endDate);
             categoryHandler.showArticlesByCategory(filter);
-        } catch (Exception e) {
-            ConsoleUtil.printError("Error fetching articles: " + e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
     }
 
@@ -116,8 +116,8 @@ public class ArticleHandler {
 
         try {
             listArticles(filter);
-        } catch (Exception e) {
-            ConsoleUtil.printError("Error fetching today's articles: " + e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
     }
 

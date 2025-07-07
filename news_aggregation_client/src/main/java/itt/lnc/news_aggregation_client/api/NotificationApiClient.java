@@ -25,10 +25,6 @@ public class NotificationApiClient {
         String url = UrlBuilder.buildUrlWithParams(Urls.NOTIFICATIONS_URL, queryParams);
         HttpResponse<String> response = APIClient.get(url, token);
 
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed to fetch notifications: " + response.body());
-        }
-
         return JsonParser.parse(response.body(), new TypeReference<>() {
         });
     }

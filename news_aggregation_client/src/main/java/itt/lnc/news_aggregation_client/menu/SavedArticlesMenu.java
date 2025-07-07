@@ -33,8 +33,8 @@ public class SavedArticlesMenu implements Menu {
                 default:
                     ConsoleUtil.printError("Invalid choice. Please try again.");
             }
-        } catch (Exception e) {
-            ConsoleUtil.printError(e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
 
     }

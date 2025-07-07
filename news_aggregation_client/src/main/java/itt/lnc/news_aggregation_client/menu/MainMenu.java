@@ -35,8 +35,8 @@ public class MainMenu implements Menu {
                 default:
                     ConsoleUtil.println("Invalid choice. Try again.");
             }
-        } catch (Exception e) {
-            ConsoleUtil.printError(e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
 
     }

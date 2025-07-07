@@ -1,6 +1,7 @@
 package itt.lnc.news_aggregation_client.handler;
 
 import itt.lnc.news_aggregation_client.constants.MenuType;
+import itt.lnc.news_aggregation_client.constants.Role;
 import itt.lnc.news_aggregation_client.dto.LoginRequest;
 import itt.lnc.news_aggregation_client.dto.RegisterRequest;
 import itt.lnc.news_aggregation_client.menu.MenuContext;
@@ -33,9 +34,13 @@ public class AuthenticationHandler {
             return;
         }
         String password = ConsoleUtil.readLine("Password: ");
+        if (!ValidationUtil.isNotBlank(password)) {
+            ConsoleUtil.printError("Password cannot be empty.");
+            return;
+        }
         authService.login(new LoginRequest(email, password));
         userService.setCurrentUser();
-        if (SessionManager.getRole().equalsIgnoreCase("admin")) {
+        if (SessionManager.getRole().equalsIgnoreCase(Role.ADMIN.name())) {
             menuContext.navigateTo(MenuType.ADMIN);
         } else {
             menuContext.navigateTo(MenuType.USER);
@@ -54,6 +59,10 @@ public class AuthenticationHandler {
             return;
         }
         String password = ConsoleUtil.readLine("Password: ");
+        if (!ValidationUtil.isNotBlank(password)) {
+            ConsoleUtil.printError("Password cannot be empty.");
+            return;
+        }
         authService.register(new RegisterRequest(username, email, password));
     }
 

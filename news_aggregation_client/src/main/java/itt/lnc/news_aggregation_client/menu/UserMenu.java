@@ -4,6 +4,7 @@ import itt.lnc.news_aggregation_client.annotation.MenuHandler;
 import itt.lnc.news_aggregation_client.constants.MenuType;
 import itt.lnc.news_aggregation_client.handler.ArticleHandler;
 import itt.lnc.news_aggregation_client.utils.ConsoleUtil;
+import itt.lnc.news_aggregation_client.utils.SessionManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ public class UserMenu implements Menu {
 
     @Override
     public void display(MenuContext menuContext) {
+        ConsoleUtil.printHeader("WELCOME " + SessionManager.getName());
         try {
             int choice = ConsoleUtil.promptMenu(List.of(
                     "Headlines",
@@ -44,8 +46,8 @@ public class UserMenu implements Menu {
                 default:
                     ConsoleUtil.printError("Invalid choice. Please try again.");
             }
-        } catch (Exception e) {
-            ConsoleUtil.printError(e.getMessage());
+        } catch (Exception exception) {
+            ConsoleUtil.printError(exception.getMessage());
         }
     }
 }
